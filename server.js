@@ -10,9 +10,8 @@ app.use(cors({ origin: '*' }));
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: "http://localhost:3001", // your React app's URL
+    origin: "*", // your React app's URL
     methods: ["GET", "POST"],
-    allowedHeaders: ["my-custom-header"],
     credentials: true
   }
 });
