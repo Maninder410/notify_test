@@ -9,7 +9,7 @@ const app = express();
 app.use(cors({ origin: '*' }));
 app.use(bodyParser.json());
 const rooms = {};
-
+const meetingLogs = {};
 // Route to store roomName and sid
 
 
@@ -24,6 +24,40 @@ const io = socketIo(server, {
 
 app.get('/', (req, res) => {
   res.send('<h1>new backend working</h1>');
+});
+app.post('/getDetails', (req, res) => {
+  res.status(200).json(meetingLogs);
+});
+
+app.post('/getDetail/:meetingid',(req,res)=>{
+  const {meetingid} = req.params;
+    console.log(meetingid);
+ 
+  return res.status(201).json(meetingLogs[meetingid]);
+});
+router.post('/:meetingid/log-meeting', (req, res) => {
+  const { meetingid } = req.params;
+  const { meetingStart, meetingEnd, recordingStart, recordingEnd, totalTime, recordingTime, users, len } = req.body;
+
+  // Create a log entry
+  const logs = [
+    `Meeting started at ${meetingStart}`,
+    `Meeting ended at ${meetingEnd}`,
+    `Recording started at ${recordingStart}`,
+    `Recording ended at ${recordingEnd}`,
+    `Total meeting time was ${totalTime.hours} hours ${totalTime.minutes} minutes ${totalTime.seconds} seconds`,
+    `Total recording time was ${recordingTime.hours} hours ${recordingTime.minutes} minutes ${recordingTime.seconds} seconds`,
+    `Users joined: ${users}`,
+    `User count: ${len}`,
+  ];
+ 
+
+  // Store the log entry using meeting ID as key
+  console.log(meetingid);
+
+  meetingLogs[meetingid] = logs;
+console.log(logs);
+  res.status(201).json({ message: 'Meeting log saved successfully', logs });
 });
 app.post('/store', (req, res) => {
   const { roomName, sid } = req.body;
