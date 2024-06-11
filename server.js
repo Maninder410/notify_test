@@ -35,7 +35,7 @@ app.post('/getDetail/:meetingid',(req,res)=>{
  
   return res.status(201).json(meetingLogs[meetingid]);
 });
-router.post('/:meetingid/log-meeting', (req, res) => {
+app.post('/:meetingid/log-meeting', (req, res) => {
   const { meetingid } = req.params;
   const { meetingStart, meetingEnd, recordingStart, recordingEnd, totalTime, recordingTime, users, len } = req.body;
 
