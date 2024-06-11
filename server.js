@@ -61,6 +61,11 @@ io.on('connection', (socket) => {
     // Emit notification to all connected clients
     io.emit('receiveNotification', message);
   });
+  socket.on('sendDetails', (message) => {
+    console.log('message received: ', message);
+    // Emit notification to all connected clients
+    io.emit('hangup', message);
+  });
 
   socket.on('disconnect', () => {
     console.log('Client disconnected');
